@@ -1,10 +1,12 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import Login from './page/loginPage'
+import Login from './page/Main/loginPage'
 import Layout from "./layout/layout";
-import Home from './page/homePage';
+import Home from './page/Main/homePage';
 import PmList  from './page/Preventive/pmList';
-import PmPlan from './page/Preventive/pmPlan';
 import PmHistory from './page/Preventive/pmHistory';
+import MdMaster from './page/MoldDie/mdMaster'
+import BoomMaster from './page/MoldDie/bomMaster'
+import MachineData from "./page/Machine/machineData";
 const BASE = import.meta.env.VITE_BASE;
 
 
@@ -14,7 +16,9 @@ const Routers = () => {
             <Routes>
                 <Route element={<Layout />}>
                     <Route path={`${BASE}`} element={<Home />} />
-                    <Route path={`${BASE}/Preventive/:pagetype/Plan`} element={<PmPlan />} />
+                    <Route path={`${BASE}/MoldDie/Master`} element={<MdMaster />} />
+                    <Route path={`${BASE}/MoldDie/Boommaster`} element={<BoomMaster/>} />
+                    <Route path={`${BASE}/Machine/Master`} element={<MachineData />} />
                     <Route path={`${BASE}/Preventive/:pagetype/List`} element={<PmList />} />
                     <Route path={`${BASE}/Preventive/:pagetype/History`} element={<PmHistory />} />
                 </Route>

@@ -71,71 +71,112 @@ function ToolbarComponent() {
 
 
     return (
-        <div className='h-[50px] bg-white dark:bg-gray-800 sticky top-0' style={{ borderBottom: '1px solid #ddd' }}>
-            <Stack direction={'row'} justifyContent={'space-between'} className='h-full' alignContent={'center'}>
-                <Stack direction={'row'} alignItems={'center'} spacing={3} pl={2}>
+        <div className="h-[50px] bg-[#133E87] dark:bg-gray-800" style={{ borderBottom: '1px solid #ddd' }}>
+            <Stack direction="row" justifyContent="space-between" className="h-full" alignContent="center">
+                <Stack direction="row" alignItems="center" pl={2} spacing={2}>
                     <div>
-                        <IconButton onClick={toggleDrawer(true)}><DensityMedium className='text-[#00a0e4]' /></IconButton>
+                        <IconButton onClick={toggleDrawer(true)}>
+                            <DensityMedium className="text-white dark:text-white" />
+                        </IconButton>
                         <Drawer open={openDrawer} onClose={toggleDrawer(false)}>
-                            <Box width={260} role="presentation" className="flex flex-col h-full bg-white dark:bg-gray-800">
+                            <Box width={260} role="presentation" className="flex flex-col h-full bg-[#133E87] dark:bg-gray-800">
                                 <img src={Logo_Daikin} alt="Logo" className="w-full h-auto object-contain p-3" />
-                                <Divider className='dark:bg-gray-300' />
-
+                                <Divider className="dark:bg-gray-300" />
                                 <PageMenu theme={theme === 'dark' ? 'dark' : 'light'} />
-
-                                <Divider className='dark:bg-gray-300' />
-                                <div className='p-1 text-xs text-center text-gray-400 '>
+                                <Divider className="dark:bg-gray-300" />
+                                <div className="p-1 text-xs text-center text-gray-400">
                                     ©2025 Daikin Compressor Industries Ltd.
                                 </div>
                             </Box>
                         </Drawer>
                     </div>
-                </Stack>
-                <Stack alignItems={'center'} spacing={1} direction={'row'} className='cursor-pointer select-none' >
-                    <Typography className='font-bold uppercase flex justify-end items-center text-[1.5em] text-[#00a0e4]  italic' onClick={handleHome}>{projectName}</Typography>
+
+                    {/* Project Name */}
+                    <Stack alignItems="center" direction="row" className="cursor-pointer select-none">
+                        <Typography
+                            variant="body1"
+                            component="div"
+                            sx={{
+                                fontWeight: '600',
+                                textTransform: 'uppercase',
+                                color: 'white',
+                                fontSize: { xs: '0.6rem', sm: '0.7rem', md: '0.8rem', lg: '1rem', xl: '1rem' }
+                            }}
+                            onClick={handleHome}
+                        >
+                            {projectName}
+                        </Typography>
+
+                    </Stack>
                 </Stack>
 
-                <Stack justifyContent={'center'} pr={2}>
-                    {
-                        loadAccountContent ? <Skeleton variant="rounded" width={210} height={30} /> :
-                            <div className={`flex items-center gap-4 justify-center`}>
-                                <div className="dark:bg-gray-800 rounded-lg">
-                                    <button
-                                        onClick={() => dispatch(toggleTheme())}
-                                        className="h-12 w-12 rounded-lg p-2 cursor-pointer"
-                                    >
-                                        <svg className="fill-[#00a0e4] hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
-                                            <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
-                                        </svg>
-
-                                        <svg className="fill-[#00a0e4] block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
-                                            <path
-                                                fillRule="evenodd"
-                                                clipRule="evenodd"
-                                                d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
-                                            ></path>
-                                        </svg>
-                                    </button>
-                                </div>
-                                <div
-                                    onClick={handleOpenMenu}
-                                    className="flex items-center gap-2 cursor-pointer select-none  rounded-lg p-2 transition-all duration-200"
+                {/* Right: Theme Toggle + User Info */}
+                <Stack justifyContent="center" pr={2}>
+                    {loadAccountContent ? (
+                        <Skeleton variant="rounded" width={210} height={30} />
+                    ) : (
+                        <div className="flex items-center justify-center">
+                            {/* Theme Toggle */}
+                            <div className="dark:bg-gray-800 rounded-lg">
+                                <button
+                                    onClick={() => dispatch(toggleTheme())}
+                                    className="h-10 w-10 md:h-12 md:w-12 rounded-lg p-2 cursor-pointer flex items-center justify-center"
                                 >
-                                    <Typography className="text-[#00a0e4] ">
-                                        {login ? `${empdata.name}${empdata.surn.substring(0, 1)}` : "######"}
-                                    </Typography>
-                                    <Avatar
-                                        sx={{ width: 36, height: 36, border: "1px solid #00a0e4" }}
-                                        src={`${imgpath}${empcode}.jpg`}
-                                    />
-                                </div>
+                                    <svg className="fill-white hidden dark:block" fill="currentColor" viewBox="0 0 20 20">
+                                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                                    </svg>
+                                    <svg className="fill-white block dark:hidden" fill="currentColor" viewBox="0 0 20 20">
+                                        <path
+                                            fillRule="evenodd"
+                                            clipRule="evenodd"
+                                            d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z"
+                                        ></path>
+                                    </svg>
+                                </button>
                             </div>
-                    }
+
+                            {/* User Info */}
+                            <div
+                                onClick={handleOpenMenu}
+                                className="flex items-center gap-2 cursor-pointer select-none rounded-lg transition-all duration-200"
+                            >
+                                <Typography
+                                    className="text-white font-bold text-xs sm:text-sm md:text-base lg:text-lg"
+                                    variant="body1"
+                                    component="div"
+                                    sx={{
+                                        fontWeight: '600',
+                                        textTransform: 'uppercase',
+                                        color: 'white',
+                                        fontSize: { xs: '0.6rem', sm: '0.7rem', md: '0.8rem', lg: '1rem', xl: '1rem' }
+                                    }}
+                                >
+                                    {login ?
+                                        `${empdata.name}${empdata.surn.substring(0, 1)}`
+                                        :
+                                        "######"
+                                    }
+                                </Typography>
+                                <Avatar
+                                    sx={{ width: 36, height: 36, border: "1px solid #00a0e4" }}
+                                    src={`${imgpath}${empcode}.jpg`}
+                                />
+                            </div>
+                        </div>
+                    )}
                 </Stack>
             </Stack>
-            <MenuComponent open={open} openMenu={openMenu} closeMenu={handleCloseMenu} handleOpenMenu={handleOpenMenu} logout={handleLogout} />
+
+            <MenuComponent
+                open={open}
+                openMenu={openMenu}
+                closeMenu={handleCloseMenu}
+                handleOpenMenu={handleOpenMenu}
+                logout={handleLogout}
+            />
         </div>
-    )
+    );
+
 }
 
 export default ToolbarComponent

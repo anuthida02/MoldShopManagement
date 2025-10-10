@@ -1,4 +1,4 @@
-import LoginPage from '../page/loginPage';
+import LoginPage from '../page/Main/loginPage';
 import { Outlet } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 // import Breadcrumbs from '../components/main/Breadcrumbs';

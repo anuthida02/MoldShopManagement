@@ -1,17 +1,19 @@
-import { Assignment, BarChart, Build, Dashboard, History, Home, ListAlt, PrecisionManufacturing, Settings } from "@mui/icons-material";
+import { Assignment, BarChart, Build, History, Home, ListAlt, PrecisionManufacturing, Settings, InfoOutline } from "@mui/icons-material";
 import type { MenuProps } from 'antd';
 import { Menu } from 'antd';
 import { useNavigate, useLocation } from "react-router-dom";
 
 type MenuItem = Required<MenuProps>['items'][number];
 const BASE = import.meta.env.VITE_BASE;
+
 const withMenuIcon = (Icon: React.ElementType) => {
-  return <span className="text-[20px]"><Icon /></span>;
+    return <span className="text-[20px] font-blod" style={{ color: 'white' }}><Icon /></span>;
 };
+
 const items: MenuItem[] = [
     {
         key: `${BASE}`,
-        label: 'Homepage',
+        label: 'Home',
         icon: withMenuIcon(Home),
     },
     {
@@ -19,33 +21,18 @@ const items: MenuItem[] = [
         label: 'Machine',
         icon: withMenuIcon(PrecisionManufacturing),
         children: [
-            { key: `${BASE}/Machine`, label: 'Machine Data', icon: withMenuIcon(Assignment)  },
-            { key: `${BASE}/MachineReport`, label: 'Mainchine Report', icon: withMenuIcon(BarChart)},
-            {
-                key: 'Request List',
-                label: 'Request List',
-                children: [
-                    { key: '7', label: 'Option 7' },
-                    { key: '8', label: 'Option 8' },
-                ],
-            },
+            { key: `${BASE}/Machine/Master`, label: 'Machine Data', icon: withMenuIcon(Assignment) },
+            { key: `${BASE}/MachineReport`, label: 'Mainchine Report', icon: withMenuIcon(BarChart) },
+            
         ],
     },
     {
-        key: '/Homepage',
+        key: `Mold & Die`,
         label: 'Mold & Die',
         icon: withMenuIcon(Build),
         children: [
-            { key: '5', label: 'Option 5' },
-            { key: '6', label: 'Option 6' },
-            {
-                key: 'sub3',
-                label: 'Submenu 3',
-                children: [
-                    { key: '7', label: 'Option 7' },
-                    { key: '8', label: 'Option 8' },
-                ],
-            },
+            { key: `${BASE}/MoldDie/Master`, label: 'Mold & Die Master', icon: withMenuIcon(Assignment) },
+            { key: `${BASE}/MoldDie/Boommaster`, label: 'Boom Master', icon: withMenuIcon(InfoOutline)}
         ],
     },
     {
@@ -53,14 +40,14 @@ const items: MenuItem[] = [
         label: 'Preventive Mainternance',
         icon: withMenuIcon(Settings),
         children: [
-            {
-                key: `${BASE}/Preventive/Machine`, label: 'PM Machine', icon: withMenuIcon(PrecisionManufacturing),
-                children: [
-                    { key: `${BASE}/Preventive/Machine/Plan`, label: 'Preventive Plan', icon: withMenuIcon(Assignment), },
-                    { key: `${BASE}/Preventive/Machine/List`, label: 'Preventive List', icon: withMenuIcon(ListAlt), },
-                    { key: `${BASE}/Preventive/Machine/History`, label: 'Preventive History', icon: withMenuIcon(History), },
-                ],
-            },
+            // {
+            //     key: `${BASE}/Preventive/Machine`, label: 'PM Machine', icon: withMenuIcon(PrecisionManufacturing),
+            //     children: [
+            //         { key: `${BASE}/Preventive/Machine/Plan`, label: 'Preventive Plan', icon: withMenuIcon(Assignment), },
+            //         { key: `${BASE}/Preventive/Machine/List`, label: 'Preventive List', icon: withMenuIcon(ListAlt), },
+            //         { key: `${BASE}/Preventive/Machine/History`, label: 'Preventive History', icon: withMenuIcon(History), },
+            //     ],
+            // },
             {
                 key: `${BASE}/Preventive/MoldDie`, label: 'PM Mold & Die', icon: withMenuIcon(Build),
                 children: [
@@ -96,16 +83,16 @@ const PageMenu = ({ theme }: { theme: 'light' | 'dark' }) => {
             onClick={handleClick}
             selectedKeys={[currentPath]}
             defaultOpenKeys={openKeys}
-            defaultSelectedKeys={[currentPath]}
+            rootClassName="custom-menu"
             style={{
                 border: 'none',
                 flex: 1,
                 overflowY: 'auto',
-                backgroundColor: theme === 'dark' ? '#1f2937' : '#ffffff',
-                color: '#00a0e4',
-               
+                backgroundColor: theme === 'dark' ? '#1f2937' : '#133E87',
+                color: '#608BC1',
             }}
         />
+
     );
 };
 

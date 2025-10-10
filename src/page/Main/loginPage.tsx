@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
-import type { AppDispatch, RootState } from '../store/store';
-import { login } from '../store/loginSlice';
+import type { AppDispatch, RootState } from '../../store/store';
+import { login } from '../../store/loginSlice';
 import { useForm } from 'react-hook-form';
-import type { UserAuth } from '../types/User.interface';
+import type { UserAuth } from '../../types/User.interface';
 import { useNavigate } from 'react-router-dom';
-import Logo_Daikin from '../assets/image/Logo_Daikin1.png'
+import Logo_Daikin from '../../assets/image/Logo_Daikin.png'
 
 function loginPage() {
     const navigate = useNavigate();

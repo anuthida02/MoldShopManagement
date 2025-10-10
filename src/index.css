@@ -3,9 +3,20 @@
 
 .ant-menu-item,
 .ant-menu-submenu-title {
-  color: #00a0e4 !important;
+  color: #ffffff !important;
 }
 
+.ant-menu-item-selected {
+  color: #608BC1 !important; /* text selected when selected this is a now color  */
+  background-color: #042257 !important; 
+  border-left: #85abda !important; 
+}
+
+.dark .ant-menu-item-selected {
+  color: #608BC1 !important;
+  background-color: #1f2937 !important;
+  border-left: #608BC1 !important;
+}
 
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
