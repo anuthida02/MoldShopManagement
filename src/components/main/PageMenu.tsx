@@ -51,8 +51,10 @@ const items: MenuItem[] = [
             {
                 key: `${BASE}/Preventive/MoldDie`, label: 'PM Mold & Die', icon: withMenuIcon(Build),
                 children: [
+                    { key: `${BASE}/Preventive/MoldDie/PMStandard`, label: 'Preventive Standard', icon: withMenuIcon(ListAlt), },
                     { key: `${BASE}/Preventive/MoldDie/Plan`, label: 'Preventive Plan', icon: withMenuIcon(Assignment), },
                     { key: `${BASE}/Preventive/MoldDie/List`, label: 'Preventive List', icon: withMenuIcon(ListAlt), },
+                    { key: `${BASE}/Preventive/MoldDie/PlanMonitor`, label: 'Plan Monitor', icon: withMenuIcon(ListAlt), },
                     { key: `${BASE}/Preventive/MoldDie/History`, label: 'Preventive History', icon: withMenuIcon(History), },
                 ],
             },
