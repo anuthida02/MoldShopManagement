@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { RightOutlined, LeftOutlined } from '@ant-design/icons';
-import { Table } from "antd";
+import { Spin, Table } from "antd";
 import Create_PMPlan from "../../components/modal/create_PMPlan";
 import { API_GETPLANLIST, API_INSERTPlan } from "../../service/pm.service";
 import dayjs from "dayjs";
@@ -28,27 +28,28 @@ function pmPlan() {
         setIsModalCreate(true);
     }
 
+    const fetchStd = async () => {
+        setLoading(true);
+        try {
+            const res = await API_GETPLANLIST();
+            console.log(res)
+            if (res && res.length > 0) setPlanList(res);
+        } catch {
+
+        } finally {
+            setLoading(false);
+        }
+    };
+
     useEffect(() => {
-        const fetchStd = async () => {
-            setLoading(true);
-            try {
-                const res = await API_GETPLANLIST();
-                console.log(res)
-                if (res && res.length > 0) setPlanList(res);
-            } catch {
-
-            } finally {
-                setLoading(false);
-            }
-        };
         fetchStd();
-
     }, []);
 
-    const handleSaveAddSTD = async (payload: any) => {
+    const handleSaveAddPlan = async (payload: any) => {
         try {
             console.log("Payload received from modal:", payload);
             const res = await API_INSERTPlan(payload);
+            fetchStd();
             console.log("Save success:", res);
         } catch (err) {
             console.error("Save error:", err);
@@ -87,10 +88,11 @@ function pmPlan() {
             render: (text: string) => dayjs(text).format('YYYY-MM-DD'),
         },
         {
-            title: <div className="text-black font-bold text-center dark:text-white">ค่าใช้จ่าย</div>,
+            title: <div className="text-black font-bold text-center dark:text-white">ค่าใช้จ่าย (฿)</div>,
             dataIndex: 'PM_TotalCost',
             key: 'PM_TotalCost',
-            align: 'center' as 'center'
+            align: 'center' as 'center',
+            render: (value: number) => `฿ ${value.toLocaleString('th-TH')}`
         },
         {
             title: <div className="text-black font-bold text-center dark:text-white">สถานะ</div>,
@@ -144,14 +146,20 @@ function pmPlan() {
                     className={`py-4 px-4 overflow-auto transition-all duration-300 ${isSidebarOpen ? "w-4/5" : "w-full"
                         }`}
                 >
-                    <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl shadow-md p-4 h-full">
-                        <Table
-                            dataSource={searchTerm ? filteredData : planList}
-                            columns={columns}
-                            bordered
-                            className="rounded-xl"
-                        />
-                    </div>
+                    {loading ? (
+                        <div>
+                            <Spin className="text-center my-2"></Spin>
+                        </div>
+                    ) : (
+                        <div className="bg-gray-50 dark:bg-gray-800 rounded-2xl shadow-md p-4 h-full">
+                            <Table
+                                dataSource={searchTerm ? filteredData : planList}
+                                columns={columns}
+                                bordered
+                                className="rounded-xl"
+                            />
+                        </div>
+                    )}
                 </div>
 
                 {/* Sidebar */}
@@ -204,7 +212,7 @@ function pmPlan() {
                 </div>
             </div>
 
-            <Create_PMPlan open={isModalCreate} close={(val) => setIsModalCreate(val)} onsave={(payload) => handleSaveAddSTD(payload)} />
+            <Create_PMPlan open={isModalCreate} close={(val) => setIsModalCreate(val)} onsave={(payload) => handleSaveAddPlan(payload)} />
         </div>
     );
 }

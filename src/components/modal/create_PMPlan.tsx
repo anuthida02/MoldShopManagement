@@ -1,11 +1,9 @@
 import { DatePicker, Input, Modal, Popover, Select, Table } from "antd";
 import { useEffect, useState, type ReactNode } from "react";
 import { useSelector } from "react-redux";
-import { API_GETMDLIST, API_GETMOLDSTD, API_GETMOLDSTDDET } from "../../service/pm.service";
+import { API_GETMDLIST, API_GETMOLDSTD, API_GETMOLDSTDDET, API_GETSHOTDETBYMD } from "../../service/pm.service";
 import dayjs from "dayjs";
 import type { PMPlanForm } from "../../interface/pmParam";
-
-
 
 
 interface Props {
@@ -165,8 +163,8 @@ function Create_PMPlan(props: Props) {
             "type:", Form.pmType,
             "Value:", Form.value,
             "Alert:", Form.alertValue,
-
         )
+
         if (Form.pmType === 'T') {
             const start = dayjs(Form.startDate);
             const end = dayjs(Form.endDate);
@@ -212,6 +210,56 @@ function Create_PMPlan(props: Props) {
             // console.log("Generated Plans:", plans);
 
             setGeneratedPlans(plans);
+        } else if (Form.pmType === 'S') {
+            const start = dayjs(Form.startDate);
+            const end = dayjs(Form.endDate);
+
+            if (!start.isValid() || !end.isValid()) {
+                alert("กรุณาเลือกวันที่เริ่มต้นและสิ้นสุดให้ถูกต้อง");
+                return;
+            }
+
+            API_GETSHOTDETBYMD(Form.mdCode).then((shotData: any) => {
+                const pmShot = parseInt(Form.value || "0");
+                if (pmShot <= 0) {
+                    alert("จำนวน Shot ต่อรอบไม่ถูกต้อง");
+                    return;
+                }
+
+                const alertShot = parseInt(Form.alertValue || "0");
+
+                const plans: any[] = [];
+                let currentShot = shotData[0].RunShot || 0;
+                let round = 1;
+                let currentDate = start;
+
+                while (currentDate.isBefore(end) || currentDate.isSame(end, 'day')) {
+                    currentShot += shotData[0].Cal_ShotPerDay || 0;
+
+                    if (currentShot >= pmShot) {
+                        const alertDate = currentDate.subtract(Math.ceil(alertShot / shotData[0].Cal_ShotPerDay), 'day');
+                        plans.push({
+                            prt_code: Form.mdCode,
+                            round: round,
+                            planDate: currentDate.format("YYYY-MM-DD"),
+                            alertDate: alertDate.format("YYYY-MM-DD"),
+                            planCost: parseFloat(Form.pmCost) || 0,
+                            details: pmDetail ? [...pmDetail] : [],
+                        });
+                        round++;
+                        currentShot = 0;
+                    }
+
+                    currentDate = currentDate.add(1, 'day');
+                }
+
+                const totalCost = plans.reduce((sum, p) => sum + p.planCost, 0);
+
+                console.log("Generated Shot Plans:", plans);
+                console.log("Plan Total Cost:", totalCost);
+
+                setGeneratedPlans(plans);
+            });
         }
     }
 

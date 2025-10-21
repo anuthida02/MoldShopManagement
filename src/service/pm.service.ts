@@ -76,3 +76,11 @@ export function API_GETPLANLIST(): Promise<any> {
         })
     }))
 }
+
+export function API_GETSHOTDETBYMD(mdcode:string): Promise<any> {
+    return new Promise((resolve => {
+         http.get(`/Preventive/GetShotDetailByMold?mdcode=${mdcode}`).then((res) => {
+            resolve(res.data);
+        })
+    }))
+}
