@@ -1,13 +1,13 @@
 import { LeftOutlined, RightOutlined } from "@ant-design/icons";
 import { Spin, Table } from "antd";
 import { useEffect, useState } from "react";
-import CreateBoomMD from "../../components/modal/createmd_Bom";
+import CreateBoomMD from "../../components/modal/modal_Bom/createmd_Bom";
 import { AuroraBackground } from "../../components/ui/aurora-background";
 import { ColourfulText } from "../../components/ui/colorful-text";
-import type { BomCount } from "../../interface/mParam";
-import { API_GETCOUNT_BOM } from "../../service/molddie.service";
+import type { BomCount, BomData } from "../../interface/mParam";
+import { API_DETAILBOM, API_GETCOUNT_BOM } from "../../service/molddie.service";
 import type { ColumnsType } from "antd/es/table";
-import EditIcon from '@mui/icons-material/Edit';
+import Detailbom from "../../components/modal/modal_Bom/detail_Bom";
 
 function BomMaster() {
 
@@ -16,6 +16,8 @@ function BomMaster() {
     const [isModalBooms, setIsModalBooms] = useState(false);
     const [countBom, setCountBom] = useState<BomCount[]>([]);
     const [loading, setLoading] = useState<boolean>(false);
+    const [isMdDetBoms, setIsMdDetBoms] = useState(false);
+    const [detBom, setDetBom] = useState<BomData[]>([]);
 
     const toggleSiderbar = () => setIsSidebarOpen(prev => !prev);
 
@@ -23,22 +25,22 @@ function BomMaster() {
         setIsModalBooms(true);
     }
 
-    useEffect(() => {
-        const fetchCountBomData = async () => {
-            try {
-                setLoading(true);
-                const response = await API_GETCOUNT_BOM();
-                if (response.result === 1) {
-                    setCountBom(response.data);
-                    console.log(response.data)
-                }
-            } catch (error) {
-                console.error("Error fetching machine data:", error);
-            } finally {
-                setLoading(false);
+    const fetchCountBomData = async () => {
+        try {
+            setLoading(true);
+            const response = await API_GETCOUNT_BOM();
+            if (response.result === 1) {
+                setCountBom(response.data);
+                console.log(response.data)
             }
-        };
+        } catch (error) {
+            console.error("Error fetching machine data:", error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
+    useEffect(() => {
         fetchCountBomData();
     }, [])
 
@@ -67,18 +69,6 @@ function BomMaster() {
             dataIndex: 'qtypart',
             key: 'qtypart',
             align: 'center' as 'center'
-        },
-        {
-            title: <div className="text-black dark:text-white font-bold text-center">ACTION</div>,
-            render: (_text: any) => (
-                <button
-                    type="button"
-                    className="text-black text-sm font-semibold bg-yellow-400 border-yellow-400 hover:bg-yellow-500 hover:border-yellow-500 rounded-lg p-2"
-                >
-                    <EditIcon /> EDIT
-                </button>
-            ),
-            align: 'center' as 'center'
         }
     ]
 
@@ -87,6 +77,22 @@ function BomMaster() {
             String(value).toLowerCase().includes(searchTerm.toLowerCase())
         )
     );
+
+    const handledetail = async (data: BomCount) => {
+        setIsMdDetBoms(false);
+        setDetBom([]);
+        const res = await API_DETAILBOM({ formular: data.formular });
+
+        if (res.result === 1 && res.data.length > 0) {
+            setDetBom(res.data);
+            setIsMdDetBoms(true);
+        } else {
+            setDetBom([]);
+            setIsMdDetBoms(true);
+        }
+    };
+
+    const total = countBom.length;
 
     return (
         <AuroraBackground>
@@ -118,6 +124,9 @@ function BomMaster() {
                                     columns={columns}
                                     bordered
                                     className="rounded-xl"
+                                    onRow={(record) => ({
+                                        onClick: () => handledetail(record)
+                                    })}
                                 // scroll={{ y: 600 }}
                                 />
                             )}
@@ -155,7 +164,7 @@ function BomMaster() {
                                     <div className="font-semibold mb-2">📊 Stats</div>
                                     <ul className="text-sm">
                                         <li className="mb-1">
-                                            Total Booms: <span className="font-bold">42</span>
+                                            Total Bom: <span className="font-bold">{total}</span>
                                         </li>
                                     </ul>
                                 </div>
@@ -163,7 +172,15 @@ function BomMaster() {
                         )}
                     </div>
                 </div>
-                <CreateBoomMD open={isModalBooms} close={(val) => setIsModalBooms(val)} onsave={() => console.log('save')} />
+                <CreateBoomMD
+                    open={isModalBooms}
+                    close={(val) => setIsModalBooms(val)}
+                    onsave={() => {
+                        fetchCountBomData();
+                        setIsModalBooms(false);
+                    }}
+                />
+                <Detailbom open={isMdDetBoms} close={(val) => setIsMdDetBoms(val)} data={detBom} />
             </div>
         </AuroraBackground>
 

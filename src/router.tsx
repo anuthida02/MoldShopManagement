@@ -22,7 +22,7 @@ const Routers = () => {
                 <Route element={<Layout />}>
                     <Route path={`${BASE}`} element={<Home />} />
                     <Route path={`${BASE}/MoldDie/Master`} element={<MdMaster />} />
-                    <Route path={`${BASE}/MoldDie/Boommaster`} element={<BoomMaster />} />
+                    <Route path={`${BASE}/MoldDie/Bommaster`} element={<BoomMaster />} />
                     <Route path={`${BASE}/Machine/Master`} element={<MachineData />} />
                     <Route path={`${BASE}/Machine/Master`} element={<MachineData />} />
                     <Route path={`${BASE}/Preventive/:pagetype/Plan`} element={<PmPlan />} />

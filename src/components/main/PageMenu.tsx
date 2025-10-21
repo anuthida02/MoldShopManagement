@@ -31,8 +31,8 @@ const items: MenuItem[] = [
         label: 'Mold & Die',
         icon: withMenuIcon(Build),
         children: [
-            { key: `${BASE}/MoldDie/Master`, label: 'Mold & Die Master', icon: withMenuIcon(Assignment) },
-            { key: `${BASE}/MoldDie/Boommaster`, label: 'Boom Master', icon: withMenuIcon(InfoOutline)}
+            { key: `${BASE}/MoldDie/Master`, label: 'Mold & Die Part Master', icon: withMenuIcon(Assignment) },
+            { key: `${BASE}/MoldDie/Bommaster`, label: 'Bom Master', icon: withMenuIcon(InfoOutline)}
         ],
     },
     {

@@ -7,9 +7,10 @@
 }
 
 .ant-menu-item-selected {
-  color: #608BC1 !important; /* text selected when selected this is a now color  */
-  background-color: #042257 !important; 
-  border-left: #85abda !important; 
+  color: #608BC1 !important;
+  /* text selected when selected this is a now color  */
+  background-color: #042257 !important;
+  border-left: #85abda !important;
 }
 
 .dark .ant-menu-item-selected {
@@ -17,6 +18,19 @@
   background-color: #1f2937 !important;
   border-left: #608BC1 !important;
 }
+
+.swal-top-modal {
+  z-index: 3000 !important;
+}
+
+.custom-yellow-select .ant-select-selector {
+  background-color: #fdfae6 !important; /* สีเหลืองอ่อน */
+  border-color: #ffe58f !important;
+}
+.custom-yellow-select:hover .ant-select-selector {
+  background-color: #fdfae6 !important;
+}
+
 
 /* :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
